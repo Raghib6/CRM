@@ -1,0 +1,84 @@
+{%  extends 'accounts/main.html' %}
+
+{% block content %}
+
+	<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Customer:</h5>
+			<hr> 
+			<a class="btn btn-outline-info  btn-sm btn-block" href="">Update Customer</a>
+			<!-- cus_customer.id লেখার কারণ হচ্ছে এই টেমপ্লেটটা customers view থেকে render হচ্ছে,createOrder থেকে না। -->
+			<a class="btn btn-outline-danger  btn-sm btn-info" href="{% url 'create_order' cus_customer.id %}">Place Order</a>
+
+		</div>
+	</div>
+
+<!-- এখানে লুপ চালানো ছাড়া Email এবং Phone প্রিন্ট করতে পারার কারণ হচ্ছে আমরা এখানে শুধুমাত্র 
+নির্দিষ্ট ইউজারের ইনফো দেখার জন্য আসতে পারতেছি। view তে ক্লিক করলে কোন ইউজারের ইনফরমেশন
+দেখাবে সেটা আগেই href="{% url 'customer' cus_customer.id %}" এ সেট করে দিয়েছিলাম। -->
+
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Contact Information</h5>
+			<hr>
+			<p>Email: {{ cus_customer.email }}</p>
+			<p>Phone: {{ cus_customer.phone }}</p>
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Total Orders</h5>
+			<hr>
+			<h1 style="text-align: center;padding: 10px">{{ cus_orders_count }}</h1>
+		</div>
+	</div>
+</div>
+
+
+<br>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<form method="get">
+					{{ myFilter.form }}
+		    <button class="btn btn-primary" type="submit">Search</button>
+		  </form>
+		</div>
+	</div>
+	
+</div>
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th>Product</th>
+					<th>Note</th>
+					<th>Date Orderd</th>
+					<th>Status</th>
+					<th>Update</th>
+					<th>Remove</th>
+				</tr>
+				{% for order in cus_orders %}
+				<tr>
+					<td>{{ order.product }}</td>
+					<td>{{ order.note }}</td>
+					<td>{{ order.date_created }}</td>
+					<td>{{ order.status }}</td>
+					<td><a class="btn btn-sm btn-info" href="{% url 'update_order' order.id %}">Update</a></td>
+						<td><a class="btn btn-sm btn-danger" href="{% url 'delete_order' order.id %}">Delete</a></td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
